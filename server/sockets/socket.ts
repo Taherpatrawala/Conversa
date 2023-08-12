@@ -12,7 +12,7 @@ function socketSetup(server: any) {
     console.log(`User connected with id ${socket.id}`);
 
     socket.on("send-message", (message: string) => {
-      console.log(message);
+      socket.broadcast.emit("receive-message", message);
     });
   });
 }

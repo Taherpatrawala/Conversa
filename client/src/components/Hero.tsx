@@ -1,20 +1,26 @@
 import { io } from "socket.io-client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const Hero = () => {
-  const [message, setMessage] = useState("");
+  //const [message, setMessage] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const socket = io("http://localhost:8080");
+
+  function handleClick() {
+    if (inputRef.current) {
+      const inputValue = inputRef.current.value;
+      socket.emit("send-message", `${inputValue}`);
+    }
+  }
 
   useEffect(() => {
     socket.on("connect", () => {
       console.log("Connected to the server :)");
     });
-  }, [socket]);
 
-  function handleClick() {
-    socket.emit("send-message", `${message}`);
-  }
+    socket.on("receive-message", (message) => alert(message));
+  }, [socket]);
 
   return (
     <div className="min-h-screen bg-slate-400">
@@ -22,10 +28,7 @@ const Hero = () => {
         <input
           type="text"
           placeholder="message..."
-          value={message}
-          onChange={(e) => {
-            setMessage(e.target.value);
-          }}
+          ref={inputRef} //ref means it is a reference to the input element unlike value which is the value of the input element
         />
         <button
           onClick={handleClick}
