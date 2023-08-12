@@ -18,9 +18,13 @@ const io = new Server(server, {
   },
 });
 
+io.on("connection", (socket) => {
+  console.log(`User connected with id ${socket.id}`);
+});
+
 mongoose.connect(process.env.MONGO_URI as string).then(() => {
   const port = 8080;
-  app.listen(port, () => {
+  server.listen(port, () => {
     console.log(`Server started at port ${port}`);
   });
 });

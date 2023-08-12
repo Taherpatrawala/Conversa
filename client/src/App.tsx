@@ -1,5 +1,14 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Hero from "./components/Hero";
+
 function App() {
-  return <div className=""></div>;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Hero />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
