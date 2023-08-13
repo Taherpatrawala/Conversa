@@ -11,8 +11,12 @@ function socketSetup(server: any) {
   io.on("connection", (socket) => {
     console.log(`User connected with id ${socket.id}`);
 
-    socket.on("send-message", (message: string) => {
-      socket.broadcast.emit("receive-message", message);
+    socket.on("send-message", (data) => {
+      socket.to(data.roomValue).emit("receive-message", data);
+    });
+
+    socket.on("join-room", (roomName) => {
+      socket.join(roomName);
     });
   });
 }
