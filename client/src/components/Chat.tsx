@@ -1,11 +1,13 @@
 import { io } from "socket.io-client";
 import { useState, useEffect, useRef } from "react";
+import axios from "axios";
 
 const Chat = () => {
   // const [reply, setReply] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
   const inputRoomRef = useRef<HTMLInputElement>(null);
   const replyRef = useRef<HTMLHeadingElement>(null);
+  const [userInfo, setUserInfo] = useState<any>();
   let reply;
   const socket = io("http://localhost:8080");
 
@@ -17,6 +19,14 @@ const Chat = () => {
       reply = inputValue;
     }
   }
+
+  useEffect(() => {
+    (async () => {
+      await axios.get("http://localhost:8080/getUser").then((res) => {
+        console.log(res.data);
+      });
+    })();
+  }, []);
 
   function handleRooms() {
     const roomValue: any = inputRoomRef?.current?.value;

@@ -2,7 +2,7 @@ import axios from "axios";
 
 const Hero = () => {
   function handleGoogleLogin() {
-    window.open("http://localhost:8080/google", "self");
+    window.location.href = "http://localhost:8080/google";
   }
   return (
     <div>
