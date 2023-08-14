@@ -1,13 +1,23 @@
 import { io } from "socket.io-client";
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserInfo } from "../slices/userInfoSlice";
+import { RootState } from "../store/store";
+import { NavLink } from "react-router-dom";
 
 const Chat = () => {
   // const [reply, setReply] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
   const inputRoomRef = useRef<HTMLInputElement>(null);
   const replyRef = useRef<HTMLHeadingElement>(null);
-  const [userInfo, setUserInfo] = useState<any>();
+  // const [userInfo, setUserInfo] = useState<any>();
+  const dispatch = useDispatch();
+  const userInfo = useSelector((state: RootState) => {
+    return state.userInfo;
+  });
+  console.log(userInfo.data);
+
   let reply;
   const socket = io("http://localhost:8080");
 
@@ -25,8 +35,9 @@ const Chat = () => {
       await axios
         .get("http://localhost:8080/protected", { withCredentials: true })
         .then((res) => {
-          console.log(res.data);
-          setUserInfo(res.data);
+          //  console.log(res.data);
+          dispatch(setUserInfo(res.data));
+          //    console.log(setUserInfo(res.data));
         });
     })();
   }, []);
@@ -82,7 +93,11 @@ const Chat = () => {
           Join
         </button>
       </div>
+
       <h1 ref={replyRef}>{reply}</h1>
+      <NavLink to="/navbar" className="cursor-pointer z-50 -translate-y-16">
+        navbar
+      </NavLink>
     </div>
   );
 };

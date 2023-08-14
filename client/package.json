@@ -10,6 +10,7 @@
     "host": "vite --host"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.9.5",
     "@types/axios": "^0.14.0",
     "axios": "^1.4.0",
     "react": "^18.2.0",
