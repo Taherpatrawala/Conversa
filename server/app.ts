@@ -8,7 +8,14 @@ import googleRoutes from "./routes/googleRoutes";
 
 const app = express();
 dotenv.config();
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 const server = http.createServer(app);
 

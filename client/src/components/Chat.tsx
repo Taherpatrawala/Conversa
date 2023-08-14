@@ -22,9 +22,12 @@ const Chat = () => {
 
   useEffect(() => {
     (async () => {
-      await axios.get("http://localhost:8080/getUser").then((res) => {
-        console.log(res.data);
-      });
+      await axios
+        .get("http://localhost:8080/protected", { withCredentials: true })
+        .then((res) => {
+          console.log(res.data);
+          setUserInfo(res.data);
+        });
     })();
   }, []);
 

@@ -20,36 +20,32 @@ googleRoutes.get(
   "/google/callback",
   passport.authenticate("google", {
     failureRedirect: "/login-failed",
-    successRedirect: "/protected",
+    successRedirect: "http://localhost:5173/chat",
   })
 );
-let user: any = null;
-googleRoutes.get("/getUser", async (req, res, next) => {
-  if (user) {
-    const existingUser: any = await User.findOne({
-      email: user.emails[0].value,
-    });
-    console.log(existingUser);
-
-    if (!existingUser) {
-      User.create({
-        name: user.displayName,
-        email: user.emails[0].value,
-        profileImage: user.photos[0].value,
-        googleId: user.id,
-      });
-    } else {
-      res.json({ message: "User already exists" });
-    }
-  }
-  next();
-});
 
 googleRoutes.get(
   "/protected",
-  (req: Request, res: Response, next: NextFunction) => {
-    user = req.user;
-    res.redirect("http://localhost:5173/chat");
+  async (req: Request, res: Response, next: NextFunction) => {
+    res.header("Access-Control-Allow-Origin", "http://localhost:5173");
+    const user: any = req.user;
+    if (user) {
+      const existingUser: any = await User.findOne({
+        email: user.emails[0].value,
+      });
+      console.log(existingUser);
+
+      if (!existingUser) {
+        User.create({
+          name: user.displayName,
+          email: user.emails[0].value,
+          profileImage: user.photos[0].value,
+          googleId: user.id,
+        });
+      }
+      res.json(existingUser);
+    }
+    next();
   }
 );
 
