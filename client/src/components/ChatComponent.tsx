@@ -6,7 +6,7 @@ import { setUserInfo } from "../slices/userInfoSlice";
 import { RootState } from "../store/store";
 import { NavLink } from "react-router-dom";
 
-const Chat = () => {
+const ChatComponent = () => {
   // const [reply, setReply] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
   const inputRoomRef = useRef<HTMLInputElement>(null);
@@ -60,8 +60,8 @@ const Chat = () => {
   }, [socket]);
 
   return (
-    <div className="min-h-screen bg-slate-400">
-      <div className="flex justify-center w-full translate-y-4">
+    <div className="min-h-screen bg-slate-400 w-[70vw]">
+      <div className="flex justify-center  mt-6 fixed bottom-5">
         <input
           type="text"
           placeholder="message..."
@@ -69,6 +69,7 @@ const Chat = () => {
           onKeyDown={(e) => {
             if (e.key === "Enter") handleClick();
           }}
+          className="p-5 w-[50vw] rounded-md ml-8"
         />
         <button
           onClick={handleClick}
@@ -77,7 +78,7 @@ const Chat = () => {
           Send
         </button>
       </div>
-      <div className="flex justify-center w-full translate-y-8">
+      <div className="flex justify-center mt-3">
         <input
           type="text"
           placeholder="room..."
@@ -100,4 +101,4 @@ const Chat = () => {
     </div>
   );
 };
-export default Chat;
+export default ChatComponent;
