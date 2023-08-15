@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import http from "http";
 import socketSetup from "./sockets/socket";
 import googleRoutes from "./routes/googleRoutes";
+import usersRoute from "./routes/usersData";
 
 const app = express();
 dotenv.config();
@@ -20,6 +21,7 @@ app.use(express.json());
 const server = http.createServer(app);
 
 app.use(googleRoutes);
+app.use(usersRoute);
 
 mongoose.connect(process.env.MONGO_URI as string).then(() => {
   const port = 8080;

@@ -94,10 +94,9 @@ const Chat = () => {
         </button>
       </div>
 
-      <h1 ref={replyRef}>{reply}</h1>
-      <NavLink to="/navbar" className="cursor-pointer z-50 -translate-y-16">
-        navbar
-      </NavLink>
+      <h1 ref={replyRef} className="text-2xl">
+        {reply}
+      </h1>
     </div>
   );
 };
