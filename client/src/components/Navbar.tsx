@@ -5,7 +5,6 @@ const Navbar = () => {
   const userInfo = useSelector((state: RootState) => {
     return state.userInfo;
   });
-  console.log(userInfo.data);
 
   return (
     <div className="flex justify-end items-center m-1 lg:mr-8">

@@ -4,7 +4,6 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "../slices/userInfoSlice";
 import { RootState } from "../store/store";
-import { NavLink } from "react-router-dom";
 
 const ChatComponent = () => {
   // const [reply, setReply] = useState<string>("");
@@ -16,7 +15,6 @@ const ChatComponent = () => {
   const userInfo = useSelector((state: RootState) => {
     return state.userInfo;
   });
-  console.log(userInfo.data);
 
   let reply;
   const socket = io("http://localhost:8080");
