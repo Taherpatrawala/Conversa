@@ -6,11 +6,9 @@ import { setUserInfo } from "../slices/userInfoSlice";
 import { RootState } from "../store/store";
 
 const ChatComponent = () => {
-  // const [reply, setReply] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
   const inputRoomRef = useRef<HTMLInputElement>(null);
   const replyRef = useRef<HTMLHeadingElement>(null);
-  // const [userInfo, setUserInfo] = useState<any>();
   const dispatch = useDispatch();
   const userInfo = useSelector((state: RootState) => state.userInfo);
   const twoUsers: any = useSelector((state: RootState) => state.users.twoUsers);
