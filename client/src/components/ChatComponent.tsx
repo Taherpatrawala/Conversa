@@ -26,14 +26,25 @@ const ChatComponent = () => {
 
     return roomName;
   }
-  const privateRoomValue = createPrivateRoom();
-  twoUsers ? socket.emit("join-private-room", privateRoomValue) : null;
+
+  let privateRoomValue: string;
+  if (twoUsers) {
+    console.log(twoUsers);
+    privateRoomValue = createPrivateRoom();
+    socket.emit("join-private-room", privateRoomValue);
+  } else {
+    console.log(twoUsers);
+  }
 
   function handleClick() {
     const inputValue = inputRef.current?.value;
     const roomValue = inputRoomRef.current?.value;
+
     if (roomValue) {
       socket.emit("send-message", { inputValue, roomValue });
+      reply = inputValue;
+    } else if (twoUsers) {
+      socket.emit("send-message", { inputValue, privateRoomValue });
       reply = inputValue;
     }
   }

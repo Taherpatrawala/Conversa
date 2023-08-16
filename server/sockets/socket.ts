@@ -12,15 +12,15 @@ function socketSetup(server: any) {
     console.log(`User connected with id ${socket.id}`);
 
     socket.on("send-message", (data) => {
-      socket.to(data.roomValue).emit("receive-message", data);
+      socket.to(data.privateRoomValue).emit("receive-message", data);
     });
 
     socket.on("join-room", (roomName) => {
       socket.join(roomName);
     });
 
-    socket.on("join-private-room", (roomName) => {
-      socket.join(roomName);
+    socket.on("join-private-room", (privateRoomValue) => {
+      socket.join(privateRoomValue);
     });
   });
 }
