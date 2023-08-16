@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 const ChatRoom = () => {
   const users: any = useSelector((state: RootState) => state.users);
-  console.log(users);
+  // console.log(users);
   // console.log(users.isFetching);
 
   return (

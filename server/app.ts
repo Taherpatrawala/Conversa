@@ -6,9 +6,11 @@ import http from "http";
 import socketSetup from "./sockets/socket";
 import googleRoutes from "./routes/googleRoutes";
 import usersRoute from "./routes/usersData";
+import bodyParser from "body-parser";
 
 const app = express();
 dotenv.config();
+app.use(bodyParser.json());
 app.use(
   cors({
     origin: "http://localhost:5173",

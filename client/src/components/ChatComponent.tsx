@@ -12,12 +12,22 @@ const ChatComponent = () => {
   const replyRef = useRef<HTMLHeadingElement>(null);
   // const [userInfo, setUserInfo] = useState<any>();
   const dispatch = useDispatch();
-  const userInfo = useSelector((state: RootState) => {
-    return state.userInfo;
-  });
+  const userInfo = useSelector((state: RootState) => state.userInfo);
+  const twoUsers: any = useSelector((state: RootState) => state.users.twoUsers);
 
   let reply;
   const socket = io("http://localhost:8080");
+
+  function createPrivateRoom() {
+    const { user1, user2 } = twoUsers;
+
+    let roomName = [user1, user2].sort().join("--with--");
+    console.log(roomName);
+
+    return roomName;
+  }
+  const privateRoomValue = createPrivateRoom();
+  twoUsers ? socket.emit("join-private-room", privateRoomValue) : null;
 
   function handleClick() {
     const inputValue = inputRef.current?.value;

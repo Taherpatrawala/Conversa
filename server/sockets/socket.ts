@@ -18,6 +18,10 @@ function socketSetup(server: any) {
     socket.on("join-room", (roomName) => {
       socket.join(roomName);
     });
+
+    socket.on("join-private-room", (roomName) => {
+      socket.join(roomName);
+    });
   });
 }
 export default socketSetup;
