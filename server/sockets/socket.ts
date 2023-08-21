@@ -1,4 +1,6 @@
 import { Server } from "socket.io";
+import Message from "../schemas/messageSchema";
+import { twoUsers } from "../routes/usersData";
 
 function socketSetup(server: any) {
   const io = new Server(server, {
@@ -12,6 +14,13 @@ function socketSetup(server: any) {
     console.log(`User connected with id ${socket.id}`);
 
     socket.on("send-message", (data) => {
+      Message.create({
+        senderId: data.twoUsers.user2,
+        receiverId: data.twoUsers.user1,
+        roomId: data.privateRoomValue,
+        message: data.inputValue,
+        timestamp: data.timestamp,
+      });
       socket.to(data.privateRoomValue).emit("receive-message", data);
     });
 

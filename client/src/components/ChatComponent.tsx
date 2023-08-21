@@ -4,6 +4,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "../slices/userInfoSlice";
 import { RootState } from "../store/store";
+import { setChats } from "../slices/usersSlice";
 
 const ChatComponent = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -12,6 +13,7 @@ const ChatComponent = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state: RootState) => state.userInfo);
   const twoUsers: any = useSelector((state: RootState) => state.users.twoUsers);
+  const chats: any = useSelector((state: RootState) => state.users.chats);
 
   let reply;
   const socket = io("http://localhost:8080");
@@ -20,14 +22,14 @@ const ChatComponent = () => {
     const { user1, user2 } = twoUsers;
 
     let roomName = [user1, user2].sort().join("--with--");
-    console.log(roomName);
+    // console.log(roomName);
 
     return roomName;
   }
 
   let privateRoomValue: string;
   if (twoUsers) {
-    console.log(twoUsers);
+    // console.log(twoUsers);
     privateRoomValue = createPrivateRoom();
     socket.emit("join-private-room", privateRoomValue);
   } else {
@@ -37,12 +39,24 @@ const ChatComponent = () => {
   function handleClick() {
     const inputValue = inputRef.current?.value;
     const roomValue = inputRoomRef.current?.value;
-
+    const timestamp = new Date();
     if (roomValue) {
-      socket.emit("send-message", { inputValue, roomValue });
+      socket.emit("send-message", {
+        inputValue,
+        roomValue,
+        timestamp,
+        twoUsers,
+      });
       reply = inputValue;
     } else if (twoUsers) {
-      socket.emit("send-message", { inputValue, privateRoomValue });
+      console.log(twoUsers);
+
+      socket.emit("send-message", {
+        inputValue,
+        privateRoomValue,
+        timestamp,
+        twoUsers,
+      });
       reply = inputValue;
     }
   }
@@ -62,7 +76,7 @@ const ChatComponent = () => {
   function handleRooms() {
     const roomValue: any = inputRoomRef?.current?.value;
     socket.emit("join-room", roomValue);
-    console.log(roomValue);
+    console.log(chats);
   }
 
   useEffect(() => {
@@ -71,8 +85,9 @@ const ChatComponent = () => {
     });
 
     socket.on("receive-message", (data) => {
-      replyRef.current!.innerText = data.inputValue;
+      //    dispatch(setChats(data.inputValue));
       reply = replyRef.current?.innerHTML; // ! means that it is not null
+      replyRef.current!.innerText = data.inputValue;
     });
   }, [socket]);
 

@@ -1,4 +1,5 @@
 import axios from "axios";
+import Google from "../assets/Google.svg";
 
 const Hero = () => {
   function handleGoogleLogin() {
@@ -10,11 +11,7 @@ const Hero = () => {
         onClick={handleGoogleLogin}
         className="text-white bg-[#313131] w-[200px] p-2 rounded-lg flex justify-center translate-y-6"
       >
-        <img
-          src="https://www.vectorlogo.zone/logos/google/google-icon.svg"
-          alt=""
-          className="w-[30px] mr-4"
-        />
+        <img src={Google} alt="G" className="w-[30px] mr-4" />
         <p>Sign Up with Google</p>
       </button>
     </div>

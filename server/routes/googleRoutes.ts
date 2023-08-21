@@ -49,4 +49,8 @@ googleRoutes.get(
   }
 );
 
+googleRoutes.get("/login-failed", (req: Request, res: Response) => {
+  res.status(401).send("<h1>login failed</h1>");
+});
+
 export default googleRoutes;
