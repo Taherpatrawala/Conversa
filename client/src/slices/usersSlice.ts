@@ -3,12 +3,20 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface initialState {
   data: any;
   twoUsers: any;
-  chats: string;
+  privateRoomValue: string;
+  chats: {
+    senderId: string;
+    receiverId: string;
+    roomId: string;
+    message: string;
+    timestamp: string;
+  };
 }
 
 const initialState = {
   data: {},
   twoUsers: {},
+  privateRoomValue: "",
   chats: [],
 };
 
@@ -22,11 +30,15 @@ export const usersSlice = createSlice({
     setTwoUsers: (state, action: PayloadAction<any>) => {
       state.twoUsers = action.payload;
     },
+    setPrivateRoomValue: (state, action: PayloadAction<any>) => {
+      state.privateRoomValue = action.payload;
+    },
     setChats: (state: any, action: PayloadAction<any>) => {
       state.chats.push(action.payload);
     },
   },
 });
 
-export const { setUsers, setTwoUsers, setChats } = usersSlice.actions;
+export const { setUsers, setTwoUsers, setChats, setPrivateRoomValue } =
+  usersSlice.actions;
 export default usersSlice.reducer;

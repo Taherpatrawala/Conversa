@@ -1,6 +1,5 @@
 import { Server } from "socket.io";
 import Message from "../schemas/messageSchema";
-import { twoUsers } from "../routes/usersData";
 
 function socketSetup(server: any) {
   const io = new Server(server, {

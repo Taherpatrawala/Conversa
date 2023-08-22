@@ -7,11 +7,9 @@ import { store } from "../src/store/store";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <QueryClientProvider client={new QueryClient()}>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </QueryClientProvider>
-  </React.StrictMode>
+  <QueryClientProvider client={new QueryClient()}>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </QueryClientProvider>
 );

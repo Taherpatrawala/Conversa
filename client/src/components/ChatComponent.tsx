@@ -1,10 +1,10 @@
 import { io } from "socket.io-client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "../slices/userInfoSlice";
 import { RootState } from "../store/store";
-import { setChats } from "../slices/usersSlice";
+import { setChats, setPrivateRoomValue } from "../slices/usersSlice";
 
 const ChatComponent = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -14,23 +14,14 @@ const ChatComponent = () => {
   const userInfo = useSelector((state: RootState) => state.userInfo);
   const twoUsers: any = useSelector((state: RootState) => state.users.twoUsers);
   const chats: any = useSelector((state: RootState) => state.users.chats);
+  const privateRoomValue: any = useSelector(
+    (state: RootState) => state.users.privateRoomValue
+  );
 
   let reply;
   const socket = io("http://localhost:8080");
 
-  function createPrivateRoom() {
-    const { user1, user2 } = twoUsers;
-
-    let roomName = [user1, user2].sort().join("--with--");
-    // console.log(roomName);
-
-    return roomName;
-  }
-
-  let privateRoomValue: string;
   if (twoUsers) {
-    // console.log(twoUsers);
-    privateRoomValue = createPrivateRoom();
     socket.emit("join-private-room", privateRoomValue);
   } else {
     console.log(twoUsers);
@@ -39,7 +30,7 @@ const ChatComponent = () => {
   function handleClick() {
     const inputValue = inputRef.current?.value;
     const roomValue = inputRoomRef.current?.value;
-    const timestamp = new Date();
+    const timestamp = new Date().toISOString();
     if (roomValue) {
       socket.emit("send-message", {
         inputValue,
@@ -59,6 +50,15 @@ const ChatComponent = () => {
       });
       reply = inputValue;
     }
+    return dispatch(
+      setChats({
+        senderId: twoUsers.user2,
+        receiverId: twoUsers.user1,
+        roomId: privateRoomValue,
+        message: inputValue,
+        timestamp: timestamp,
+      })
+    );
   }
 
   useEffect(() => {
@@ -84,11 +84,26 @@ const ChatComponent = () => {
       console.log("Connected to the server :)");
     });
 
-    socket.on("receive-message", (data) => {
-      //    dispatch(setChats(data.inputValue));
-      reply = replyRef.current?.innerHTML; // ! means that it is not null
-      replyRef.current!.innerText = data.inputValue;
-    });
+    const timestamp = new Date().toISOString();
+
+    const receiveMessageHandler = (data: any) => {
+      dispatch(
+        setChats({
+          senderId: twoUsers.user1,
+          receiverId: twoUsers.user2,
+          roomId: privateRoomValue,
+          message: data.inputValue,
+          timestamp: timestamp,
+        })
+      );
+      reply = replyRef.current?.innerHTML;
+      replyRef.current!.innerText = data.inputValue; // ! means that it is not null
+    };
+    socket.on("receive-message", receiveMessageHandler);
+
+    return () => {
+      socket.off("receive-message", receiveMessageHandler);
+    };
   }, [socket]);
 
   return (

@@ -4,12 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { setUsers, setTwoUsers } from "../slices/usersSlice";
 import { useEffect, useState } from "react";
+import { setPrivateRoomValue } from "../slices/usersSlice";
 const Users = () => {
   const dispatch = useDispatch();
 
-  const userInfo = useSelector((state: RootState) => {
-    return state.userInfo.data;
-  });
+  const userInfo = useSelector((state: RootState) => state.userInfo.data);
+  const privateRoomValue = useSelector(
+    (state: RootState) => state.users.privateRoomValue
+  );
 
   const [currentChatUser, setCurrentChatUser] = useState<string>("");
 
@@ -37,13 +39,24 @@ const Users = () => {
     );
   }, [data]);
 
+  function createPrivateRoomValue(user1: string, user2: string) {
+    let roomName = [user1, user2].sort().join("--with--");
+    // console.log(roomName);
+
+    return roomName;
+  }
+
   const createPrivateRoom = async (user1: string, user2: string) => {
     dispatch(setTwoUsers({ user1: user1, user2: user2 }));
+    const privateRoomValue = createPrivateRoomValue(user1, user2);
+    dispatch(setPrivateRoomValue(privateRoomValue));
+    console.log(privateRoomValue);
 
     return await axios
       .post("http://localhost:8080/create-private-room", {
         user1: user1,
         user2: user2,
+        privateRoomValue: privateRoomValue,
       })
       .then((res) => {
         setCurrentChatUser(res.data.user1);

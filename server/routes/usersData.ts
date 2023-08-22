@@ -1,5 +1,6 @@
 import { Router } from "express";
 import User from "../schemas/userSchema";
+import Message from "../schemas/messageSchema";
 
 const usersRoute = Router();
 
@@ -8,11 +9,12 @@ usersRoute.get("/all-users", async (req, res, next) => {
   res.status(200).json(users);
 });
 
-export let twoUsers: any;
+export let twoUsersData: any;
 usersRoute.post("/create-private-room", (req, res, next) => {
-  twoUsers = req.body;
+  twoUsersData = req.body;
+
   // console.log(twoUsers);
-  res.status(200).json(twoUsers);
+  res.status(200).json(twoUsersData);
   next();
 });
 
