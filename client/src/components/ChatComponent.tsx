@@ -51,6 +51,7 @@ const ChatComponent = () => {
       });
       reply = inputValue;
     }
+    inputRef.current!.value = "";
     return dispatch(
       setChats({
         senderId: twoUsers.user2,
