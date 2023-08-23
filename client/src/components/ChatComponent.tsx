@@ -102,7 +102,7 @@ const ChatComponent = () => {
   }, [socket]);
 
   return (
-    <div className="min-h-screen bg-slate-400 w-[70vw] overflow-scroll">
+    <div className="min-h-screen bg-slate-400 w-[70vw] overflow-clip">
       <div className="flex justify-center  mt-6 fixed bottom-5">
         <input
           type="text"

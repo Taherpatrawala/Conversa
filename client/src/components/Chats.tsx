@@ -7,6 +7,7 @@ import { useEffect } from "react";
 
 const Chats = () => {
   const dispatch = useDispatch();
+  const users: any = useSelector((state: RootState) => state.users.data.data);
   const twoUsers: any = useSelector((state: RootState) => state.users.twoUsers);
   const chats: any = useSelector((state: RootState) => state.users.chats);
   const privateRoomValue: string = useSelector(
@@ -46,9 +47,30 @@ const Chats = () => {
   console.log("Chats ", chats);
 
   return (
-    <div className="h-auto">
-      <div onClick={() => refetch()}>Chats</div>
-      <div className="flex flex-col">
+    <div className="h-[100vh] overflow-scroll ">
+      <div
+        onClick={() => refetch()}
+        className="flex h-min w-full bg-[#8f95ec] cursor-point absolute top-0"
+      >
+        {users
+          ? users
+              .filter((user: any) => {
+                return user.googleId === twoUsers.user1;
+              })
+              .map((user: any) => {
+                return (
+                  <div className="">
+                    <img
+                      src={`${user.profileImage}`}
+                      alt=""
+                      className="w-[40px] rounded-full"
+                    />
+                  </div>
+                );
+              })
+          : null}
+      </div>
+      <div className="flex flex-col mb-20">
         {chats.map((chat: any) => {
           return (
             <div
