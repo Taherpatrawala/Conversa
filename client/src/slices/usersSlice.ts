@@ -1,23 +1,33 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface initialState {
+interface initialStateType {
   data: any;
   twoUsers: any;
   privateRoomValue: string;
-  chats: {
-    senderId: string;
-    receiverId: string;
-    roomId: string;
-    message: string;
-    timestamp: string;
-  };
+  chats: [
+    {
+      senderId: string;
+      receiverId: string;
+      roomId: string;
+      message: string;
+      timestamp: string;
+    }
+  ];
 }
 
-const initialState = {
+const initialState: initialStateType = {
   data: {},
   twoUsers: {},
   privateRoomValue: "",
-  chats: [],
+  chats: [
+    {
+      senderId: "",
+      receiverId: "",
+      roomId: "",
+      message: "",
+      timestamp: "",
+    },
+  ],
 };
 
 export const usersSlice = createSlice({

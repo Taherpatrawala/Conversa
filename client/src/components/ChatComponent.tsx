@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "../slices/userInfoSlice";
 import { RootState } from "../store/store";
 import { setChats, setPrivateRoomValue } from "../slices/usersSlice";
+import Chats from "./Chats";
 
 const ChatComponent = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -73,12 +74,6 @@ const ChatComponent = () => {
     })();
   }, []);
 
-  function handleRooms() {
-    const roomValue: any = inputRoomRef?.current?.value;
-    socket.emit("join-room", roomValue);
-    console.log(chats);
-  }
-
   useEffect(() => {
     socket.on("connect", () => {
       console.log("Connected to the server :)");
@@ -107,7 +102,7 @@ const ChatComponent = () => {
   }, [socket]);
 
   return (
-    <div className="min-h-screen bg-slate-400 w-[70vw]">
+    <div className="min-h-screen bg-slate-400 w-[70vw] overflow-scroll">
       <div className="flex justify-center  mt-6 fixed bottom-5">
         <input
           type="text"
@@ -125,26 +120,8 @@ const ChatComponent = () => {
           Send
         </button>
       </div>
-      <div className="flex justify-center mt-3">
-        <input
-          type="text"
-          placeholder="room..."
-          ref={inputRoomRef} //ref means it is a reference to the input element unlike value which is the value of the input element
-          onKeyDown={(e) => {
-            if (e.key === "Enter") handleRooms();
-          }}
-        />
-        <button
-          onClick={handleRooms}
-          className="border-2 border-[#e75353] rounded-md"
-        >
-          Join
-        </button>
-      </div>
 
-      <h1 ref={replyRef} className="text-2xl">
-        {reply}
-      </h1>
+      {twoUsers.user1 && <Chats />}
     </div>
   );
 };
