@@ -31,12 +31,12 @@ const Chats = () => {
     "messages",
     getMessages,
     {
-      enabled: false,
+      enabled: true,
     }
   );
 
   useEffect(() => {
-    if (data) {
+    if (data && chats.length < 2) {
       data.forEach((mess: object) => {
         dispatch(setChats(mess));
       });
@@ -46,31 +46,35 @@ const Chats = () => {
   console.log("data ", data);
   console.log("Chats ", chats);
 
+  useEffect(() => {
+    if (twoUsers.user1) {
+      refetch();
+    }
+  }, [twoUsers.user1]);
+
   return (
     <div className="h-[100vh] overflow-scroll ">
-      <div
-        onClick={() => refetch()}
-        className="flex h-min w-full bg-[#8f95ec] cursor-point absolute top-0"
-      >
-        {users
+      <div className="flex h-min w-[70vw] bg-[#000000] cursor-pointer p-1 absolute top-0">
+        {twoUsers && users
           ? users
               .filter((user: any) => {
                 return user.googleId === twoUsers.user1;
               })
               .map((user: any) => {
                 return (
-                  <div className="">
+                  <div className="flex justify-start items-center gap-4 pl-3">
                     <img
                       src={`${user.profileImage}`}
                       alt=""
                       className="w-[40px] rounded-full"
                     />
+                    <p className="text-xl text-white">{user.name}</p>
                   </div>
                 );
               })
           : null}
       </div>
-      <div className="flex flex-col mb-20">
+      <div className="flex flex-col mb-20 pt-6">
         {chats.map((chat: any) => {
           return (
             <div
@@ -82,9 +86,9 @@ const Chats = () => {
               <p
                 className={`${
                   chat.senderId === twoUsers.user2
-                    ? "bg-[#b6dca0] justify-self-end"
-                    : "bg-[#ade9ee]"
-                } w-[13vw] rounded-md p-2 m-1.5`}
+                    ? "bg-[#b6dca0] justify-self-end rounded-tr-sm"
+                    : "bg-[#ade9ee] rounded-tl-sm"
+                } w-[13vw] rounded-xl p-2 m-1.5`}
               >
                 {chat.message}
               </p>

@@ -46,9 +46,26 @@ export const usersSlice = createSlice({
     setChats: (state: any, action: PayloadAction<any>) => {
       state.chats.push(action.payload);
     },
+
+    resetAll: (state) => {
+      state.chats = [
+        {
+          senderId: "",
+          receiverId: "",
+          roomId: "",
+          message: "",
+          timestamp: "",
+        },
+      ];
+    },
   },
 });
 
-export const { setUsers, setTwoUsers, setChats, setPrivateRoomValue } =
-  usersSlice.actions;
+export const {
+  setUsers,
+  setTwoUsers,
+  setChats,
+  setPrivateRoomValue,
+  resetAll,
+} = usersSlice.actions;
 export default usersSlice.reducer;

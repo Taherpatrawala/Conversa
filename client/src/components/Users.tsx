@@ -2,13 +2,19 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
-import { setUsers, setTwoUsers } from "../slices/usersSlice";
+import {
+  setUsers,
+  setTwoUsers,
+  setChats,
+  resetAll,
+} from "../slices/usersSlice";
 import { useEffect, useState } from "react";
 import { setPrivateRoomValue } from "../slices/usersSlice";
 const Users = () => {
   const dispatch = useDispatch();
 
   const userInfo = useSelector((state: RootState) => state.userInfo.data);
+  const twoUsers = useSelector((state: RootState) => state.users.twoUsers);
   const privateRoomValue = useSelector(
     (state: RootState) => state.users.privateRoomValue
   );
@@ -64,6 +70,13 @@ const Users = () => {
       });
   };
 
+  function handleNewPrivateRoom(user1: string) {
+    if (twoUsers.user1 !== user1) {
+      return dispatch(resetAll());
+    }
+    return;
+  }
+
   return (
     <div className="bg-black text-white md:w-[30vw] h-[100vh]">
       {userInfo &&
@@ -74,12 +87,15 @@ const Users = () => {
           .map((user: any) => {
             return (
               <div
-                className={`flex flex-col justify-start items-start w-full border border-[#787272] p-3 hover:bg-[#3c3c3c] transition-all
+                className={`flex flex-col justify-start items-start w-full 
+                border border-[#787272] p-3 hover:bg-[#3c3c3c] transition-all
+                cursor-pointer
                 ${user.googleId === currentChatUser ? "bg-[#515151]" : ""}
                 `}
                 key={user.googleId}
                 onClick={() => {
                   createPrivateRoom(user.googleId, userInfo.googleId);
+                  handleNewPrivateRoom(user.googleId);
                 }}
               >
                 <div className={`flex`}>
