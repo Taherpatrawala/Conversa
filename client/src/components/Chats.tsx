@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 import axios from "axios";
 import { RootState } from "../store/store";
 import { setChats } from "../slices/usersSlice";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 const Chats = () => {
   const dispatch = useDispatch();
@@ -13,6 +13,8 @@ const Chats = () => {
   const privateRoomValue: string = useSelector(
     (state: RootState) => state.users.privateRoomValue
   );
+
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   async function getMessages() {
     const { data } = await axios.post(
@@ -52,8 +54,16 @@ const Chats = () => {
     }
   }, [twoUsers.user1]);
 
+  useEffect(() => {
+    chatContainerRef.current?.scrollTo({
+      top: chatContainerRef.current.scrollHeight,
+      left: 0,
+      behavior: "smooth",
+    });
+  }, [chats]);
+
   return (
-    <div className="h-[100vh] overflow-scroll ">
+    <div className="h-[100vh] overflow-scroll" ref={chatContainerRef}>
       <div className="flex h-min w-[70vw] bg-[#000000] cursor-pointer p-1 absolute top-0">
         {twoUsers && users
           ? users
