@@ -25,10 +25,18 @@ const server = http.createServer(app);
 app.use(googleRoutes);
 app.use(usersRoute);
 
-mongoose.connect(process.env.MONGO_URI as string).then(() => {
-  const port = 8080;
-  server.listen(port, () => {
-    console.log(`Server started at port ${port}`);
+const PORT = process.env.PORT || 5000;
+
+try {
+  mongoose.connect(process.env.MONGO_SECRET_URI as string).then(() => {
+    const port = 8080;
+    server.listen(port, () => {
+      console.log(`Server started at port ${port}`);
+    });
   });
-});
-socketSetup(server);
+  socketSetup(server);
+} catch {
+  (err: any) => {
+    console.log(err);
+  };
+}
