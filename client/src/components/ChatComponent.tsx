@@ -1,13 +1,14 @@
-import { io } from "socket.io-client";
-import { useEffect, useRef, useState } from "react";
+import { Socket, io } from "socket.io-client";
+import { useEffect, useRef } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "../slices/userInfoSlice";
 import { RootState } from "../store/store";
-import { setChats, setPrivateRoomValue } from "../slices/usersSlice";
+import { setChats } from "../slices/usersSlice";
 import Chats from "./Chats";
 
 const ChatComponent = () => {
+  const socket: any = useRef();
   const inputRef = useRef<HTMLInputElement>(null);
   const inputRoomRef = useRef<HTMLInputElement>(null);
   const replyRef = useRef<HTMLHeadingElement>(null);
@@ -20,20 +21,32 @@ const ChatComponent = () => {
   );
 
   let reply;
-  const socket = io("http://localhost:8080");
 
-  if (twoUsers) {
-    socket.emit("join-private-room", privateRoomValue);
-  } else {
-    console.log(twoUsers);
-  }
+  useEffect(() => {
+    socket.current = io("http://localhost:8080");
+    socket.current.on("connect", () => {
+      console.log("Connected to the server :)");
+    });
+
+    return () => {
+      socket.current.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (twoUsers) {
+      socket.current.emit("join-private-room", privateRoomValue);
+    } else {
+      console.log(twoUsers);
+    }
+  }, [twoUsers]);
 
   function handleClick() {
     const inputValue = inputRef.current?.value;
     const roomValue = inputRoomRef.current?.value;
     const timestamp = new Date().toISOString();
     if (roomValue) {
-      socket.emit("send-message", {
+      socket.current.emit("send-message", {
         inputValue,
         roomValue,
         timestamp,
@@ -43,7 +56,7 @@ const ChatComponent = () => {
     } else if (twoUsers) {
       console.log(twoUsers);
 
-      socket.emit("send-message", {
+      socket.current.emit("send-message", {
         inputValue,
         privateRoomValue,
         timestamp,
@@ -76,11 +89,11 @@ const ChatComponent = () => {
   }, []);
 
   useEffect(() => {
-    socket.on("connect", () => {
-      console.log("Connected to the server :)");
-    });
-
     const timestamp = new Date().toISOString();
+
+    socket.current.on("online-users", (data: any) =>
+      console.log("online", data)
+    );
 
     const receiveMessageHandler = (data: any) => {
       dispatch(
@@ -92,13 +105,13 @@ const ChatComponent = () => {
           timestamp: timestamp,
         })
       );
-      reply = replyRef.current?.innerHTML;
       replyRef.current!.innerText = data.inputValue; // ! means that it is not null
+      reply = replyRef.current?.innerHTML;
     };
-    socket.on("receive-message", receiveMessageHandler);
+    socket.current.on("receive-message", receiveMessageHandler);
 
     return () => {
-      socket.off("receive-message", receiveMessageHandler);
+      socket.current.off("receive-message", receiveMessageHandler);
     };
   }, [socket]);
 

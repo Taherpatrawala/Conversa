@@ -78,7 +78,7 @@ const Users = () => {
   }
 
   return (
-    <div className="bg-black text-white md:w-[30vw] h-[100vh]">
+    <div className="bg-black text-white md:w-[30vw] h-[100vh] p-1">
       {userInfo &&
         data
           ?.filter((user: any) => {
@@ -88,8 +88,8 @@ const Users = () => {
             return (
               <div
                 className={`flex flex-col justify-start items-start w-full 
-                border border-[#787272] p-3 hover:bg-[#3c3c3c] transition-all
-                cursor-pointer
+                border border-[#454545] p-3 m-2 ml-0 hover:bg-[#3c3c3c] transition-all
+                cursor-pointer rounded-lg
                 ${user.googleId === currentChatUser ? "bg-[#515151]" : ""}
                 `}
                 key={user.googleId}

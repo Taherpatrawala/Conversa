@@ -9,7 +9,10 @@ function socketSetup(server: any) {
     },
   });
 
+  let onlineUsers: string[] = [];
+
   io.on("connection", (socket) => {
+    onlineUsers.push(socket.id);
     console.log(`User connected with id ${socket.id}`);
 
     socket.on("send-message", (data) => {
@@ -30,6 +33,19 @@ function socketSetup(server: any) {
     socket.on("join-private-room", (privateRoomValue) => {
       socket.join(privateRoomValue);
     });
+
+    socket.on("disconnect", (reason) => {
+      onlineUsers.forEach((user, index) => {
+        if (user === socket.id) {
+          onlineUsers.splice(index, 1);
+        }
+      });
+      socket.broadcast.emit("online-users", onlineUsers);
+      console.log("User disconnected", reason, socket.id);
+      console.log(onlineUsers);
+    });
+
+    socket.broadcast.emit("online-users", onlineUsers);
   });
 }
 export default socketSetup;

@@ -84,7 +84,7 @@ const Chats = () => {
               })
           : null}
       </div>
-      <div className="flex flex-col mb-20 pt-6">
+      <div className="flex flex-col md:mb-24 pt-6">
         {chats.map((chat: any) => {
           return (
             <div
