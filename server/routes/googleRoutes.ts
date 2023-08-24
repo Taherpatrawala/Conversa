@@ -24,6 +24,7 @@ googleRoutes.get(
   })
 );
 
+export let existingUserExport: any;
 googleRoutes.get(
   "/protected",
   async (req: Request, res: Response, next: NextFunction) => {
@@ -43,6 +44,7 @@ googleRoutes.get(
           googleId: user.id,
         });
       }
+      existingUserExport = existingUser;
       res.json(existingUser);
     }
     next();

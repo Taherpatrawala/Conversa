@@ -63,8 +63,11 @@ const Chats = () => {
   }, [chats]);
 
   return (
-    <div className="h-[100vh] overflow-scroll" ref={chatContainerRef}>
-      <div className="flex h-min w-[70vw] bg-[#000000] cursor-pointer p-1 absolute top-0">
+    <div
+      className="h-[100vh] overflow-scroll  overflow-x-clip"
+      ref={chatContainerRef}
+    >
+      <div className="flex h-min w-[70vw] overflow-clip bg-[#000000] cursor-pointer p-1 absolute top-0">
         {twoUsers && users
           ? users
               .filter((user: any) => {
@@ -72,7 +75,10 @@ const Chats = () => {
               })
               .map((user: any) => {
                 return (
-                  <div className="flex justify-start items-center gap-4 pl-3">
+                  <div
+                    className="flex justify-start items-center gap-4 pl-3"
+                    key={user.googleId}
+                  >
                     <img
                       src={`${user.profileImage}`}
                       alt=""

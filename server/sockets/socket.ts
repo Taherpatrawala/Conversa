@@ -1,5 +1,6 @@
 import { Server } from "socket.io";
 import Message from "../schemas/messageSchema";
+import { existingUserExport } from "../routes/googleRoutes";
 
 function socketSetup(server: any) {
   const io = new Server(server, {
@@ -9,10 +10,17 @@ function socketSetup(server: any) {
     },
   });
 
-  let onlineUsers: string[] = [];
+  interface onlineUsersType {
+    id: string;
+    googleId?: string;
+  }
+
+  type onlineUsersArray = onlineUsersType[];
+
+  let onlineUsers: onlineUsersArray = [];
 
   io.on("connection", (socket) => {
-    onlineUsers.push(socket.id);
+    onlineUsers.push({ id: socket.id, googleId: existingUserExport?.googleId });
     console.log(`User connected with id ${socket.id}`);
 
     socket.on("send-message", (data) => {
@@ -36,7 +44,7 @@ function socketSetup(server: any) {
 
     socket.on("disconnect", (reason) => {
       onlineUsers.forEach((user, index) => {
-        if (user === socket.id) {
+        if (user.id === socket.id) {
           onlineUsers.splice(index, 1);
         }
       });

@@ -15,6 +15,9 @@ const Users = () => {
 
   const userInfo = useSelector((state: RootState) => state.userInfo.data);
   const twoUsers = useSelector((state: RootState) => state.users.twoUsers);
+  const activeUsers: any = useSelector(
+    (state: RootState) => state.activeUsers.activeUsersData
+  );
   const privateRoomValue = useSelector(
     (state: RootState) => state.users.privateRoomValue
   );
@@ -98,7 +101,7 @@ const Users = () => {
                   handleNewPrivateRoom(user.googleId);
                 }}
               >
-                <div className={`flex`}>
+                <div className={`flex justify-center items-center`}>
                   {" "}
                   <img
                     src={`${user.profileImage}`}
@@ -106,6 +109,16 @@ const Users = () => {
                     className="rounded-full w-[30px] mr-3"
                   />
                   <p>{user.name}</p>
+                  {activeUsers?.map((activeUser: any) => {
+                    if (activeUser.googleId === user.googleId) {
+                      return (
+                        <div
+                          key={user.googleId}
+                          className="w-[12px] h-[12px] bg-green-400 rounded-full m-1"
+                        ></div>
+                      );
+                    }
+                  })}
                 </div>
               </div>
             );

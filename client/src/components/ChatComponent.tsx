@@ -1,4 +1,4 @@
-import { Socket, io } from "socket.io-client";
+import { io } from "socket.io-client";
 import { useEffect, useRef } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,6 +6,7 @@ import { setUserInfo } from "../slices/userInfoSlice";
 import { RootState } from "../store/store";
 import { setChats } from "../slices/usersSlice";
 import Chats from "./Chats";
+import { setActiveUsers } from "../slices/activeUsersSlice";
 
 const ChatComponent = () => {
   const socket: any = useRef();
@@ -13,9 +14,11 @@ const ChatComponent = () => {
   const inputRoomRef = useRef<HTMLInputElement>(null);
   const replyRef = useRef<HTMLHeadingElement>(null);
   const dispatch = useDispatch();
-  const userInfo = useSelector((state: RootState) => state.userInfo);
+
   const twoUsers: any = useSelector((state: RootState) => state.users.twoUsers);
-  const chats: any = useSelector((state: RootState) => state.users.chats);
+  const activeUsers: any = useSelector(
+    (state: RootState) => state.activeUsers.activeUsersData
+  );
   const privateRoomValue: any = useSelector(
     (state: RootState) => state.users.privateRoomValue
   );
@@ -26,6 +29,10 @@ const ChatComponent = () => {
     socket.current = io("http://localhost:8080");
     socket.current.on("connect", () => {
       console.log("Connected to the server :)");
+    });
+
+    socket.current.on("online-users", (data: any) => {
+      dispatch(setActiveUsers(data));
     });
 
     return () => {
@@ -91,10 +98,6 @@ const ChatComponent = () => {
   useEffect(() => {
     const timestamp = new Date().toISOString();
 
-    socket.current.on("online-users", (data: any) =>
-      console.log("online", data)
-    );
-
     const receiveMessageHandler = (data: any) => {
       dispatch(
         setChats({
@@ -133,6 +136,7 @@ const ChatComponent = () => {
         >
           Send
         </button>
+        <button onClick={() => console.log(activeUsers)}>Online</button>
       </div>
 
       {twoUsers.user1 && <Chats />}
