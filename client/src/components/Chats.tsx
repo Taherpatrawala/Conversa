@@ -18,7 +18,7 @@ const Chats = () => {
 
   async function getMessages() {
     const { data } = await axios.post(
-      "http://localhost:8080/get-private-room-messages",
+      `${import.meta.env.VITE_SERVER_LINK}/get-private-room-messages`,
       {
         user1: twoUsers.user1,
         user2: twoUsers.user2,

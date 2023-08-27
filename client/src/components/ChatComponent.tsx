@@ -13,6 +13,7 @@ const ChatComponent = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const inputRoomRef = useRef<HTMLInputElement>(null);
   const replyRef = useRef<HTMLHeadingElement>(null);
+
   const dispatch = useDispatch();
 
   const twoUsers: any = useSelector((state: RootState) => state.users.twoUsers);
@@ -26,12 +27,12 @@ const ChatComponent = () => {
   let reply;
 
   useEffect(() => {
-    socket.current = io("http://localhost:8080");
+    socket.current = io(`${import.meta.env.VITE_SERVER_LINK}`);
     socket.current.on("connect", () => {
       console.log("Connected to the server :)");
     });
 
-    socket.current.on("online-users", (data: any) => {
+    socket?.current.on("online-users", (data: any) => {
       dispatch(setActiveUsers(data));
     });
 
@@ -86,7 +87,9 @@ const ChatComponent = () => {
   useEffect(() => {
     (async () => {
       await axios
-        .get("http://localhost:8080/protected", { withCredentials: true })
+        .get(`${import.meta.env.VITE_SERVER_LINK}/protected`, {
+          withCredentials: true,
+        })
         .then((res) => {
           //  console.log(res.data);
           dispatch(setUserInfo(res.data));

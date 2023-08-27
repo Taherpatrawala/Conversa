@@ -23,9 +23,12 @@ const Users = () => {
   );
 
   const [currentChatUser, setCurrentChatUser] = useState<string>("");
+  const [activeFlag, setActiveFlag] = useState(false);
 
   async function getUsers() {
-    const { data } = await axios.get("http://localhost:8080/all-users");
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_SERVER_LINK}/all-users`
+    );
     return data;
   }
 
@@ -48,6 +51,14 @@ const Users = () => {
     );
   }, [data]);
 
+  useEffect(() => {
+    if (activeUsers && activeUsers.length > 0) {
+      setActiveFlag(true);
+    } else {
+      setActiveFlag(false);
+    }
+  }, [activeUsers]);
+
   function createPrivateRoomValue(user1: string, user2: string) {
     let roomName = [user1, user2].sort().join("--with--");
     // console.log(roomName);
@@ -62,7 +73,7 @@ const Users = () => {
     console.log(privateRoomValue);
 
     return await axios
-      .post("http://localhost:8080/create-private-room", {
+      .post(`${import.meta.env.VITE_SERVER_LINK}/create-private-room`, {
         user1: user1,
         user2: user2,
         privateRoomValue: privateRoomValue,
@@ -95,7 +106,7 @@ const Users = () => {
                 cursor-pointer rounded-lg
                 ${user.googleId === currentChatUser ? "bg-[#515151]" : ""}
                 `}
-                key={user.googleId}
+                key={user.googleId * 2}
                 onClick={() => {
                   createPrivateRoom(user.googleId, userInfo.googleId);
                   handleNewPrivateRoom(user.googleId);
@@ -118,6 +129,7 @@ const Users = () => {
                         ></div>
                       );
                     }
+                    return;
                   })}
                 </div>
               </div>

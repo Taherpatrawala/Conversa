@@ -7,7 +7,12 @@ import cors from "cors";
 import User from "../schemas/userSchema";
 const googleRoutes = Router();
 
-googleRoutes.use(session({ secret: `${process.env.SESSION_SECRET}` }));
+googleRoutes.use(
+  session({
+    secret: `${process.env.SESSION_SECRET}`,
+    cookie: { maxAge: 60000000000 },
+  })
+);
 googleRoutes.use(passport.initialize());
 googleRoutes.use(passport.session());
 googleRoutes.use(cors());

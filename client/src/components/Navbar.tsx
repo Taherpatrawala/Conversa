@@ -6,6 +6,10 @@ const Navbar = () => {
     return state.userInfo;
   });
 
+  function LogOut(name: string) {
+    return (document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`);
+  }
+
   return (
     <div className="flex justify-end items-center m-1 lg:mr-8">
       {userInfo.data == null && <button>Log in</button>}
@@ -17,7 +21,12 @@ const Navbar = () => {
             className="rounded-full w-[50px]"
           />
           <p className="text-2xl m-1">{userInfo.data.name}</p>
-          <button className="text-xl ml-2">Log out</button>
+          <button
+            onClick={() => LogOut("connect.sid")}
+            className="text-xl font-semibold font-mono text-white ml-2 border-2 border-[#c9333a] bg-[#d73939] rounded-lg"
+          >
+            Log out
+          </button>
         </div>
       )}
     </div>

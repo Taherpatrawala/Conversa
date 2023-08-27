@@ -1,9 +1,8 @@
-import axios from "axios";
 import Google from "../assets/Google.svg";
 
 const Hero = () => {
   function handleGoogleLogin() {
-    window.location.href = "http://localhost:8080/google";
+    window.location.href = `${import.meta.env.VITE_SERVER_LINK}/google`;
   }
   return (
     <div>
