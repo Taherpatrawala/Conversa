@@ -30,6 +30,7 @@ googleRoutes.get(
   passport.authenticate("google", {
     failureRedirect: "/login-failed",
     successRedirect: "http://localhost:5173/chat",
+    session: true,
   })
 );
 
@@ -37,24 +38,32 @@ export let existingUserExport: any;
 googleRoutes.get(
   "/protected",
   async (req: Request, res: Response, next: NextFunction) => {
-    res.header("Access-Control-Allow-Origin", "http://localhost:5173");
-    const user: any = req.user;
-    if (user) {
-      const existingUser: any = await User.findOne({
-        email: user.emails[0].value,
-      });
-      console.log(existingUser);
+    try {
+      res.header("Access-Control-Allow-Origin", req.headers.origin);
+      const user: any = req.user;
+      console.log(user);
 
-      if (!existingUser) {
-        User.create({
-          name: user.displayName,
+      if (user) {
+        const existingUser: any = await User.findOne({
           email: user.emails[0].value,
-          profileImage: user.photos[0].value,
-          googleId: user.id,
         });
+        console.log(existingUser);
+
+        if (!existingUser) {
+          User.create({
+            name: user.displayName,
+            email: user.emails[0].value,
+            profileImage: user.photos[0].value,
+            googleId: user.id,
+          });
+        }
+        existingUserExport = existingUser;
+        res.json(existingUser);
       }
-      existingUserExport = existingUser;
-      res.json(existingUser);
+    } catch (error) {
+      console.log(error);
+
+      res.status(401).send("<h1>login failed</h1>");
     }
   }
 );
