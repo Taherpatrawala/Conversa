@@ -14,7 +14,7 @@ googleRoutes.use(
     store: MongoStore.create({
       mongoUrl: `${process.env.MONGO_SECRET_URI}`,
     }),
-    cookie: { maxAge: 60000000000, secure: true },
+    cookie: { maxAge: 60000000000 },
   })
 );
 googleRoutes.use(passport.initialize());
