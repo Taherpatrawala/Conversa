@@ -13,7 +13,7 @@ require("custom-env").env();
 const app = express();
 dotenv.config();
 app.use(bodyParser.json());
-app.use(cookieParser());
+app.use(cookieParser(process.env.SESSION_SECRET));
 app.use(googleRoutes);
 app.use(
   cors({
