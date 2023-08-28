@@ -14,6 +14,7 @@ const app = express();
 dotenv.config();
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(googleRoutes);
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -25,7 +26,6 @@ app.use(
 app.use(express.json());
 const server = http.createServer(app);
 
-app.use(googleRoutes);
 app.use(usersRoute);
 
 const PORT = process.env.PORT || 5000;
