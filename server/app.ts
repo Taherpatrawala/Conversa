@@ -7,11 +7,13 @@ import socketSetup from "./sockets/socket";
 import googleRoutes from "./routes/googleRoutes";
 import usersRoute from "./routes/usersData";
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 require("custom-env").env();
 
 const app = express();
 dotenv.config();
 app.use(bodyParser.json());
+app.use(cookieParser());
 app.use(
   cors({
     origin: "http://localhost:5173",
