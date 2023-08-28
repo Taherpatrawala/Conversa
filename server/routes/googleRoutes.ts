@@ -38,33 +38,28 @@ export let existingUserExport: any;
 googleRoutes.get(
   "/protected",
   async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      res.header("Access-Control-Allow-Origin", req.headers.origin);
-      const user: any = req.user;
-      console.log(user);
+    res.header("Access-Control-Allow-Origin", req.headers.origin);
+    const user: any = req.user;
+    console.log(user);
 
-      if (user) {
-        const existingUser: any = await User.findOne({
+    if (user) {
+      const existingUser: any = await User.findOne({
+        email: user.emails[0].value,
+      });
+      console.log(existingUser);
+
+      if (!existingUser) {
+        User.create({
+          name: user.displayName,
           email: user.emails[0].value,
+          profileImage: user.photos[0].value,
+          googleId: user.id,
         });
-        console.log(existingUser);
-
-        if (!existingUser) {
-          User.create({
-            name: user.displayName,
-            email: user.emails[0].value,
-            profileImage: user.photos[0].value,
-            googleId: user.id,
-          });
-        }
-        existingUserExport = existingUser;
-        res.json(existingUser);
       }
-    } catch (error) {
-      console.log(error);
-
-      res.status(401).send("<h1>login failed</h1>");
+      existingUserExport = existingUser;
+      res.json(existingUser);
     }
+    res.status(401).send("<h1>login failed</h1>");
   }
 );
 
