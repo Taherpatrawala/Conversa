@@ -38,6 +38,7 @@ export let existingUserExport: any;
 googleRoutes.get(
   "/protected",
   async (req: Request, res: Response, next: NextFunction) => {
+    res.header("Access-Control-Allow-Credentials", "true");
     res.header("Access-Control-Allow-Origin", req.headers.origin);
     const user: any = req.user;
     console.log(user);
