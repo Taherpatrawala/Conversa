@@ -5,11 +5,15 @@ import { Request, Response, NextFunction } from "express";
 import "../auth/google";
 import cors from "cors";
 import User from "../schemas/userSchema";
+import MongoStore from "connect-mongo";
 const googleRoutes = Router();
 
 googleRoutes.use(
   session({
     secret: `${process.env.SESSION_SECRET}`,
+    store: MongoStore.create({
+      mongoUrl: `${process.env.MONGO_SECRET_URI}`,
+    }),
     cookie: { maxAge: 60000000000 },
   })
 );

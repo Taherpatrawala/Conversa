@@ -7,6 +7,7 @@ import socketSetup from "./sockets/socket";
 import googleRoutes from "./routes/googleRoutes";
 import usersRoute from "./routes/usersData";
 import bodyParser from "body-parser";
+require("custom-env").env();
 
 const app = express();
 dotenv.config();
@@ -29,9 +30,8 @@ const PORT = process.env.PORT || 5000;
 
 try {
   mongoose.connect(process.env.MONGO_SECRET_URI as string).then(() => {
-    const port = 8080;
-    server.listen(port, () => {
-      console.log(`Server started at port ${port}`);
+    server.listen(PORT, () => {
+      console.log(`Server started at port ${PORT}`);
     });
   });
   socketSetup(server);
