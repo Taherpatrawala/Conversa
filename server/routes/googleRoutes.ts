@@ -56,7 +56,6 @@ googleRoutes.get(
       existingUserExport = existingUser;
       res.json(existingUser);
     }
-    next();
   }
 );
 
