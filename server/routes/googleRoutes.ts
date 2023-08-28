@@ -42,12 +42,13 @@ googleRoutes.get(
     res.header("Access-Control-Allow-Origin", req.headers.origin);
     const user: any = req.user;
     console.log(user);
+    console.log("Session Data:", req.session);
 
     if (user) {
       const existingUser: any = await User.findOne({
         email: user.emails[0].value,
       });
-      console.log(existingUser);
+      //  console.log(existingUser);
 
       if (!existingUser) {
         User.create({
@@ -59,8 +60,9 @@ googleRoutes.get(
       }
       existingUserExport = existingUser;
       res.json(existingUser);
+    } else {
+      res.status(401).send("<h1>login failed</h1>");
     }
-    res.status(401).send("<h1>login failed</h1>");
   }
 );
 

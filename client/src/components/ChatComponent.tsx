@@ -7,6 +7,7 @@ import { RootState } from "../store/store";
 import { setChats } from "../slices/usersSlice";
 import Chats from "./Chats";
 import { setActiveUsers } from "../slices/activeUsersSlice";
+import confetti from "../assets/confetti.svg";
 
 const ChatComponent = () => {
   const socket: any = useRef();
@@ -122,7 +123,7 @@ const ChatComponent = () => {
   }, [socket]);
 
   return (
-    <div className="min-h-screen bg-slate-400 w-[70vw] overflow-clip">
+    <div className="min-h-screen w-[70vw] overflow-clip bg-[#c73232]">
       <div className="flex justify-center  mt-6 fixed bottom-5">
         <input
           type="text"
@@ -142,7 +143,13 @@ const ChatComponent = () => {
         <button onClick={() => console.log(activeUsers)}>Online</button>
       </div>
 
-      {twoUsers.user1 && <Chats />}
+      {twoUsers.user1 ? (
+        <Chats />
+      ) : (
+        <div className="h-full w-full flex justify-center items-center -z-40">
+          Select any user to get started
+        </div>
+      )}
     </div>
   );
 };

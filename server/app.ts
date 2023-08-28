@@ -28,7 +28,7 @@ const server = http.createServer(app);
 
 app.use(usersRoute);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 
 try {
   mongoose.connect(process.env.MONGO_SECRET_URI as string).then(() => {

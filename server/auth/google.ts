@@ -20,9 +20,11 @@ passport.use(
 passport.serializeUser((user, done) => {
   //serializeUser is used to store the user object in the session
   done(null, user);
+  console.log("Serialize User:", user);
 });
 
 passport.deserializeUser((user: any, done) => {
   //deserializeUser is used to retrieve the user object from the session
   done(null, user); //here the user is the user object that is given by the google strategy and is stored in the session the first argument is the error and the second is the user object
+  console.log("Deserialize User:", user);
 });

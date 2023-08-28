@@ -4,6 +4,8 @@ import axios from "axios";
 import { RootState } from "../store/store";
 import { setChats } from "../slices/usersSlice";
 import { useEffect, useRef } from "react";
+import confetti from "../assets/confetti.svg";
+import { web } from "webpack";
 
 const Chats = () => {
   const dispatch = useDispatch();
@@ -64,8 +66,15 @@ const Chats = () => {
 
   return (
     <div
-      className="h-[100vh] overflow-scroll  overflow-x-clip"
+      className="h-[100vh] overflow-scroll  overflow-x-clip z-30"
       ref={chatContainerRef}
+      style={{
+        backgroundImage: `url(${confetti})`,
+        backgroundSize: "contain",
+        WebkitBackgroundSize: "contain",
+        MozBackgroundSize: "cover",
+        margin: "0",
+      }}
     >
       <div className="flex h-min w-[70vw] overflow-clip bg-[#000000] cursor-pointer p-1 absolute top-0">
         {twoUsers && users
