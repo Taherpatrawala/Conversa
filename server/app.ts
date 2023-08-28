@@ -17,7 +17,7 @@ app.use(cookieParser(process.env.SESSION_SECRET));
 app.use(googleRoutes);
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_LINK,
     methods: ["GET", "POST"],
     credentials: true,
   })

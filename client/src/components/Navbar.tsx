@@ -12,7 +12,7 @@ const Navbar = () => {
 
   return (
     <div className="flex justify-end items-center  bg-gradient-to-tr from-[#302c2c] to-[#000000]">
-      {userInfo.data == null && <button>Log in</button>}
+      {userInfo.data == null && <button className="text-white">Log in</button>}
       {userInfo.data && (
         <div className="flex items-center">
           <img

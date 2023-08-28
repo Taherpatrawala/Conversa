@@ -5,7 +5,7 @@ import { RootState } from "../store/store";
 import { setChats } from "../slices/usersSlice";
 import { useEffect, useRef } from "react";
 import confetti from "../assets/confetti.svg";
-import { web } from "webpack";
+import beanEater from "../assets/bean-eater2.svg";
 
 const Chats = () => {
   const dispatch = useDispatch();
@@ -100,26 +100,38 @@ const Chats = () => {
           : null}
       </div>
       <div className="flex flex-col md:mb-24 pt-6">
-        {chats.map((chat: any) => {
-          return (
-            <div
-              className={`w-full flex flex-col 
+        {isFetching || isLoading ? (
+          <div className="flex justify-center items-center h-[80vh] w-full">
+            <img
+              src={`${beanEater}`}
+              alt="Loading..."
+              className="w-[20vh] h-[20vh] "
+            />
+          </div>
+        ) : (
+          <div>
+            {chats.map((chat: any) => {
+              return (
+                <div
+                  className={`w-full flex flex-col 
             ${chat.senderId === twoUsers.user2 ? " items-end" : "items-start"}
             `}
-              key={chat.timestamp}
-            >
-              <p
-                className={`${
-                  chat.senderId === twoUsers.user2
-                    ? "bg-[#b6dca0] justify-self-end rounded-tr-sm"
-                    : "bg-[#ade9ee] rounded-tl-sm"
-                } w-[13vw] rounded-xl p-2 m-1.5`}
-              >
-                {chat.message}
-              </p>
-            </div>
-          );
-        })}
+                  key={chat.timestamp}
+                >
+                  <p
+                    className={`${
+                      chat.senderId === twoUsers.user2
+                        ? "bg-[#b6dca0] justify-self-end rounded-tr-sm"
+                        : "bg-[#ade9ee] rounded-tl-sm"
+                    } w-[13vw] rounded-xl p-2 m-1.5`}
+                  >
+                    {chat.message}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

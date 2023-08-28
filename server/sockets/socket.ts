@@ -5,7 +5,7 @@ import { existingUserExport } from "../routes/googleRoutes";
 function socketSetup(server: any) {
   const io = new Server(server, {
     cors: {
-      origin: "http://localhost:5173",
+      origin: process.env.CLIENT_LINK,
       methods: ["GET", "POST"],
     },
   });

@@ -29,7 +29,7 @@ googleRoutes.get(
   "/google/callback",
   passport.authenticate("google", {
     failureRedirect: "/login-failed",
-    successRedirect: "http://localhost:5173/chat",
+    successRedirect: `${process.env.CLIENT_LINK}/chat`,
     session: true,
   })
 );
