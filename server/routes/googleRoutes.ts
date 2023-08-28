@@ -29,7 +29,7 @@ googleRoutes.get(
   "/google/callback",
   passport.authenticate("google", {
     failureRedirect: "/login-failed",
-    successRedirect: `${process.env.CLIENT_LINK}/chat`,
+    successRedirect: "https://taherpatrawala-conversa.netlify.app/chat",
     session: true,
   })
 );
