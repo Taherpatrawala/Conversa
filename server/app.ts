@@ -28,7 +28,7 @@ app.use(
     }),
     cookie: { maxAge: 60000000000 },
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true, //this will help us to save the session even if the user is not logged in
   })
 );
 app.use(passport.initialize());
