@@ -29,7 +29,7 @@ googleRoutes.get(
   "/google/callback",
   passport.authenticate("google", {
     failureRedirect: "/login-failed",
-    successRedirect: "https://taherpatrawala-conversa.netlify.app/chat",
+    successRedirect: `${process.env.CLIENT_LINK}/chat`,
     session: true,
   })
 );
@@ -41,23 +41,13 @@ googleRoutes.get(
     res.header("Access-Control-Allow-Credentials", "true");
     res.header("Access-Control-Allow-Origin", req.headers.origin);
     const user: any = req.user;
-    console.log(user);
+    console.log("User is", user);
     console.log("Session Data:", req.session);
 
     if (user) {
       const existingUser: any = await User.findOne({
-        email: user.emails[0].value,
+        email: user.email,
       });
-      //  console.log(existingUser);
-
-      if (!existingUser) {
-        User.create({
-          name: user.displayName,
-          email: user.emails[0].value,
-          profileImage: user.photos[0].value,
-          googleId: user.id,
-        });
-      }
       existingUserExport = existingUser;
       res.json(existingUser);
     } else {

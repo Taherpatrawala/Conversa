@@ -1,5 +1,6 @@
 import passport from "passport";
 require("dotenv").config();
+import User from "../schemas/userSchema";
 
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 
@@ -12,19 +13,32 @@ passport.use(
       scope: ["email", "profile"],
     },
     function (accessToken: any, refreshToken: any, profile: any, done: any) {
+      console.log("profile", profile);
+
       return done(null, profile);
     }
   )
 );
 
-passport.serializeUser((user, done) => {
-  //serializeUser is used to store the user object in the session
-  done(null, user);
-  console.log("Serialize User:", user);
+passport.serializeUser(async (user: any, done) => {
+  const existingUser: any = await User.findOne({
+    id: user.id,
+  });
+  //  console.log(existingUser);
+
+  if (!existingUser) {
+    User.create({
+      id: user.id,
+      name: user.displayName,
+      email: user.emails[0].value,
+      profileImage: user.photos[0].value,
+      googleId: user.id,
+    });
+  }
+  done(null, user.id);
 });
 
-passport.deserializeUser((user: any, done) => {
-  //deserializeUser is used to retrieve the user object from the session
-  done(null, user); //here the user is the user object that is given by the google strategy and is stored in the session the first argument is the error and the second is the user object
-  console.log("Deserialize User:", user);
+passport.deserializeUser(async (id: any, done) => {
+  const user = await User.findOne({ id });
+  done(null, user);
 });

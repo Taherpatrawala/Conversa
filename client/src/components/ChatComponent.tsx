@@ -92,7 +92,7 @@ const ChatComponent = () => {
           withCredentials: true,
         })
         .then((res) => {
-          //  console.log(res.data);
+          console.log("data is", res.data);
           dispatch(setUserInfo(res.data));
           //    console.log(setUserInfo(res.data));
         });
