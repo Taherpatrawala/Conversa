@@ -21,24 +21,30 @@ passport.use(
 );
 
 passport.serializeUser(async (user: any, done) => {
-  const existingUser: any = await User.findOne({
-    id: user.id,
-  });
-  //  console.log(existingUser);
-
-  if (!existingUser) {
-    User.create({
+  try {
+    const existingUser: any = await User.findOne({
       id: user.id,
-      name: user.displayName,
-      email: user.emails[0].value,
-      profileImage: user.photos[0].value,
-      googleId: user.id,
     });
+
+    if (!existingUser) {
+      await User.create({
+        id: user.id,
+        name: user.displayName,
+        email: user.emails[0].value,
+        profileImage: user.photos[0].value,
+        googleId: user.id,
+      });
+    }
+
+    done(null, user.id);
+  } catch (error) {
+    done(error);
   }
-  done(null, user.id);
 });
 
 passport.deserializeUser(async (id: any, done) => {
+  console.log(typeof id);
+
   const user = await User.findOne({ id: id });
   console.log("id", id);
 
