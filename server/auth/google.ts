@@ -26,6 +26,8 @@ passport.serializeUser(async (user: any, done) => {
       id: user.id,
     });
 
+    console.log("serializeUser", user);
+
     if (!existingUser) {
       await User.create({
         id: user.id,
@@ -45,10 +47,15 @@ passport.serializeUser(async (user: any, done) => {
 passport.deserializeUser(async (id: any, done) => {
   console.log(typeof id);
 
-  const user = await User.findOne({ id: id });
-  console.log("id", id);
+  try {
+    const user = await User.findOne({ id: id });
 
-  console.log("deserializing user", user);
+    console.log("id", id);
 
-  done(null, user);
+    console.log("deserializing user", user);
+
+    done(null, user);
+  } catch (error) {
+    done(error);
+  }
 });

@@ -5,59 +5,7 @@ import { Request, Response, NextFunction } from "express";
 import "../auth/google";
 import cors from "cors";
 import User from "../schemas/userSchema";
-import MongoStore from "connect-mongo";
+
 const googleRoutes = Router();
-
-googleRoutes.use(
-  session({
-    secret: `${process.env.SESSION_SECRET}`,
-    store: MongoStore.create({
-      mongoUrl: `${process.env.MONGO_SECRET_URI}`,
-    }),
-    cookie: { maxAge: 60000000000 },
-  })
-);
-googleRoutes.use(passport.initialize());
-googleRoutes.use(passport.session());
-googleRoutes.use(cors());
-googleRoutes.get(
-  "/google",
-  passport.authenticate("google", { scope: ["email", "profile"] })
-);
-
-googleRoutes.get(
-  "/google/callback",
-  passport.authenticate("google", {
-    failureRedirect: "/login-failed",
-    successRedirect: `${process.env.CLIENT_LINK}/chat`,
-    session: true,
-  })
-);
-
-export let existingUserExport: any;
-googleRoutes.get(
-  "/protected",
-  async (req: Request, res: Response, next: NextFunction) => {
-    res.header("Access-Control-Allow-Credentials", "true");
-    res.header("Access-Control-Allow-Origin", req.headers.origin);
-    const user: any = req.user;
-    console.log("User is", user);
-    console.log("Session Data:", req.session);
-
-    if (user) {
-      const existingUser: any = await User.findOne({
-        email: user.email,
-      });
-      existingUserExport = existingUser;
-      res.json(existingUser);
-    } else {
-      res.status(401).send("<h1>login failed</h1>");
-    }
-  }
-);
-
-googleRoutes.get("/login-failed", (req: Request, res: Response) => {
-  res.status(401).send("<h1>login failed</h1>");
-});
 
 export default googleRoutes;

@@ -1,11 +1,15 @@
 import { Router } from "express";
 import User from "../schemas/userSchema";
 import Message from "../schemas/messageSchema";
+import "../auth/google";
 
 const usersRoute = Router();
 
 usersRoute.get("/all-users", async (req, res, next) => {
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Origin", req.headers.origin);
   const user = req.user;
+
   console.log("Getting all users", user);
 
   const users = await User.find();

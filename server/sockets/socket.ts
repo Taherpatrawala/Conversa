@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
 import Message from "../schemas/messageSchema";
-import { existingUserExport } from "../routes/googleRoutes";
+import { existingUserExport } from "../app";
 
 function socketSetup(server: any) {
   const io = new Server(server, {
