@@ -26,7 +26,7 @@ app.use(
     store: MongoStore.create({
       mongoUrl: `${process.env.MONGO_SECRET_URI}`,
     }),
-    cookie: { maxAge: 60000000000 },
+    cookie: { maxAge: 60000000000, secure: true },
     resave: false,
     saveUninitialized: true, //this will help us to save the session even if the user is not logged in
   })
