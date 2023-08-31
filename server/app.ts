@@ -28,7 +28,12 @@ app.use(
     store: MongoStore.create({
       mongoUrl: `${process.env.MONGO_SECRET_URI}`,
     }),
-    cookie: { maxAge: 60000000000, secure: true, sameSite: "none" }, //sameSite: "none" means that the cookie is not sent to the server when the request is coming from a different origin
+    cookie: {
+      maxAge: 60000000000,
+      secure: true,
+      sameSite: "none",
+      httpOnly: false,
+    }, //sameSite: "none" means that the cookie is not sent to the server when the request is coming from a different origin
     resave: false,
     saveUninitialized: true, //this will help us to save the session even if the user is not logged in
   })
