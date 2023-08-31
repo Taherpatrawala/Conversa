@@ -29,7 +29,7 @@ app.use(
       mongoUrl: `${process.env.MONGO_SECRET_URI}`,
     }),
     cookie: {
-      domain: process.env.VITE_SERVER_LINK,
+      domain: process.env.CLIENT_LINK,
       maxAge: 60000000000,
       secure: true,
       sameSite: "none",
