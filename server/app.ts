@@ -20,6 +20,7 @@ app.use(bodyParser.json());
 //app.use(googleRoutes);
 app.use(cookieParser(process.env.SESSION_SECRET));
 
+app.set("trust proxy", 1); //this is important because in production the server is behind a load balancer which terminates SSL
 app.use(
   session({
     secret: `98598ehvi4uh59g84w9ihvi4h5hv98h`,
@@ -42,7 +43,6 @@ app.use(
   })
 );
 
-app.set("trust proxy", 1); //this is important because in production the server is behind a load balancer which terminates SSL
 app.use(express.json());
 const server = http.createServer(app);
 
