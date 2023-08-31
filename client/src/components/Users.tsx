@@ -27,7 +27,8 @@ const Users = () => {
 
   async function getUsers() {
     const { data } = await axios.get(
-      `${import.meta.env.VITE_SERVER_LINK}/all-users`
+      `${import.meta.env.VITE_SERVER_LINK}/all-users`,
+      { withCredentials: true }
     );
     return data;
   }
