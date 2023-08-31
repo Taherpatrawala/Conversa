@@ -29,6 +29,7 @@ app.use(
       mongoUrl: `${process.env.MONGO_SECRET_URI}`,
     }),
     cookie: {
+      domain: process.env.VITE_SERVER_LINK,
       maxAge: 60000000000,
       secure: true,
       sameSite: "none",
@@ -44,7 +45,7 @@ app.use(passport.session());
 app.use(
   cors({
     origin: process.env.CLIENT_LINK,
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     credentials: true,
   })
 );
