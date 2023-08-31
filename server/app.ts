@@ -21,13 +21,14 @@ app.use(bodyParser.json());
 app.use(cookieParser(process.env.SESSION_SECRET));
 
 app.set("trust proxy", 1); //this is important because in production the server is behind a load balancer which terminates SSL
+app.enable("trust proxy");
 app.use(
   session({
     secret: `98598ehvi4uh59g84w9ihvi4h5hv98h`,
     store: MongoStore.create({
       mongoUrl: `${process.env.MONGO_SECRET_URI}`,
     }),
-    cookie: { maxAge: 60000000000, secure: true },
+    cookie: { maxAge: 60000000000, secure: true, sameSite: "none" }, //sameSite: "none" means that the cookie is not sent to the server when the request is coming from a different origin
     resave: false,
     saveUninitialized: true, //this will help us to save the session even if the user is not logged in
   })
