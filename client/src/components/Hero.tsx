@@ -8,7 +8,7 @@ const Hero = () => {
     <div>
       <button
         onClick={handleGoogleLogin}
-        className="text-white bg-[#313131] w-[200px] p-2 rounded-lg flex justify-center translate-y-6"
+        className="text-white bg-[#313131] w-[200px] p-2 rounded-lg flex justify-center items-center translate-y-6"
       >
         <img src={Google} alt="G" className="w-[30px] mr-4" />
         <p>Sign Up with Google</p>

@@ -1,5 +1,5 @@
 import { io } from "socket.io-client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "../slices/userInfoSlice";
@@ -7,7 +7,8 @@ import { RootState } from "../store/store";
 import { setChats } from "../slices/usersSlice";
 import Chats from "./Chats";
 import { setActiveUsers } from "../slices/activeUsersSlice";
-import confetti from "../assets/confetti.svg";
+import EmojiPicker from "emoji-picker-react";
+import Emojis from "./Emojis";
 
 const ChatComponent = () => {
   const socket: any = useRef();
@@ -24,6 +25,8 @@ const ChatComponent = () => {
   const privateRoomValue: any = useSelector(
     (state: RootState) => state.users.privateRoomValue
   );
+
+  const [emojiPicker, setEmojiPicker] = useState(false);
 
   let reply;
 
@@ -125,6 +128,14 @@ const ChatComponent = () => {
   return (
     <div className="min-h-screen w-[70vw] overflow-clip bg-[#c73232]">
       <div className="flex justify-center  mt-6 fixed bottom-5">
+        {emojiPicker ? (
+          <EmojiPicker
+            autoFocusSearch={false}
+            width="50%"
+            height={350}
+            lazyLoadEmojis={true}
+          />
+        ) : null}
         <input
           type="text"
           placeholder="message..."
@@ -140,7 +151,14 @@ const ChatComponent = () => {
         >
           Send
         </button>
-        <button onClick={() => console.log(activeUsers)}>Online</button>
+        <button
+          onClick={() => {
+            console.log(activeUsers);
+            setEmojiPicker(!emojiPicker);
+          }}
+        >
+          Online
+        </button>
       </div>
 
       {twoUsers.user1 ? (
