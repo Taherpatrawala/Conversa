@@ -13,6 +13,7 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import User from "./schemas/userSchema";
 require("custom-env").env();
+import { existingUserGoogleAcc } from "./auth/google";
 
 const app = express();
 dotenv.config();
@@ -72,7 +73,7 @@ export let existingUserExport: any;
 app.get("/protected", async (req, res, next) => {
   res.header("Access-Control-Allow-Credentials", "true");
   res.header("Access-Control-Allow-Origin", req.headers.origin);
-  const user: any = req.user;
+  const user: any = existingUserGoogleAcc;
   console.log("User is", user);
   console.log("Session Data:", req.session);
 

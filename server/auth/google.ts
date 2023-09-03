@@ -20,6 +20,7 @@ passport.use(
   )
 );
 
+export let existingUserGoogleAcc: any;
 passport.serializeUser(async (user: any, done) => {
   try {
     const existingUser: any = await User.findOne({
@@ -37,7 +38,7 @@ passport.serializeUser(async (user: any, done) => {
         googleId: user.id,
       });
     }
-
+    existingUserGoogleAcc = existingUser;
     done(null, user.id);
   } catch (error) {
     done(error);
