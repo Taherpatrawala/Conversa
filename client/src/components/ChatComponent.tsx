@@ -9,6 +9,8 @@ import Chats from "./Chats";
 import { setActiveUsers } from "../slices/activeUsersSlice";
 import EmojiPicker from "emoji-picker-react";
 import Emojis from "./Emojis";
+import paperplane from "../assets/paperplane.svg";
+import smiley from "../assets/smiley.svg";
 
 const ChatComponent = () => {
   const socket: any = useRef();
@@ -127,15 +129,16 @@ const ChatComponent = () => {
 
   return (
     <div className="min-h-screen w-[70vw] overflow-clip bg-[#c73232]">
-      <div className="flex justify-center  mt-6 fixed bottom-5">
-        {emojiPicker ? (
+      {emojiPicker ? (
+        <div className="fixed bottom-1/2 top-1/4 right-1/2 left-1/2 ">
           <EmojiPicker
             autoFocusSearch={false}
-            width="50%"
             height={350}
             lazyLoadEmojis={true}
           />
-        ) : null}
+        </div>
+      ) : null}
+      <div className="flex justify-center  mt-6 fixed bottom-5">
         <input
           type="text"
           placeholder="message..."
@@ -143,21 +146,35 @@ const ChatComponent = () => {
           onKeyDown={(e) => {
             if (e.key === "Enter") handleClick();
           }}
-          className="p-5 w-[50vw] rounded-md ml-8"
+          className="p-5 w-[50vw] rounded-bl-md rounded-tl-md ml-8 border-none outline-none"
         />
         <button
-          onClick={handleClick}
-          className="border-2 border-[#e75353] rounded-md"
-        >
-          Send
-        </button>
-        <button
+          className="bg-white px-2 hover:bg-[#dcdada] transition-all duration-300"
           onClick={() => {
             console.log(activeUsers);
             setEmojiPicker(!emojiPicker);
           }}
         >
-          Online
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z"
+            />
+          </svg>
+        </button>
+        <button
+          onClick={handleClick}
+          className="bg-white rounded-tr-md rounded-br-md pr-2 pl-2 hover:bg-[#dcdada] transition-all duration-300"
+        >
+          <img src={paperplane} alt="send" className="w-6 h-6" />
         </button>
       </div>
 
