@@ -1,13 +1,19 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const userInfo = useSelector((state: RootState) => {
     return state.userInfo;
   });
+  const navigate = useNavigate();
 
-  function LogOut(name: string) {
-    return (document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`);
+  async function LogOut() {
+    await axios.get(`${import.meta.env.VITE_SERVER_LINK}/logout`, {
+      withCredentials: true,
+    });
+    navigate("/");
   }
 
   return (
@@ -24,7 +30,7 @@ const Navbar = () => {
             {userInfo.data.name}
           </p>
           <button
-            onClick={() => LogOut("connect.sid")}
+            onClick={() => LogOut()}
             className="text-xl font-semibold font-mono text-white ml-2 lg:mr-8 border-2 border-[#c9333a] bg-[#d73939] rounded-lg"
           >
             Log out

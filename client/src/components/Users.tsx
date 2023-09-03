@@ -93,7 +93,7 @@ const Users = () => {
   }
 
   return (
-    <div className="bg-black text-white md:w-[30vw] h-[100vh] p-1">
+    <div className="bg-black text-white md:w-[30vw] h-[100vh] p-1 overflow-scroll">
       {userInfo &&
         data
           ?.filter((user: any) => {

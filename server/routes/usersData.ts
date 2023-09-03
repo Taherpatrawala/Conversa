@@ -33,4 +33,12 @@ usersRoute.post("/get-private-room-messages", (req, res, next) => {
     });
 });
 
+usersRoute.get("/logout", (req, res) => {
+  req.logout;
+  req.session.destroy((err) => {
+    if (err) throw err;
+    res.clearCookie("connect.sid");
+    res.status(200).json("User logged out");
+  });
+});
 export default usersRoute;

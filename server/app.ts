@@ -30,7 +30,7 @@ app.use(
       mongoUrl: `${process.env.MONGO_SECRET_URI}`,
     }),
     cookie: {
-      domain: `conversa-l8em.onrender.com`, //this is important because in production the server is behind a load balancer which terminates SSL and the cookie needs to be set to the root domain which is the domain of the server
+      domain: `taherpatrawala-conversa.netlify.app`, //this is important because in production the server is behind a load balancer which terminates SSL and the cookie needs to be set to the root domain which is the domain of the server
       maxAge: 60000000000,
       secure: true,
       sameSite: "none",
@@ -73,8 +73,10 @@ export let existingUserExport: any;
 app.get("/protected", async (req, res, next) => {
   res.header("Access-Control-Allow-Credentials", "true");
   res.header("Access-Control-Allow-Origin", req.headers.origin);
-  const user: any = existingUserGoogleAcc;
-  console.log("User is", user);
+  const user: any = req.user ? req.user : existingUserGoogleAcc;
+  // const user: any = req.user;
+  console.log("User is", req.user ? "req.user" : "existing google user");
+
   console.log("Session Data:", req.session);
 
   if (user) {
