@@ -47,9 +47,6 @@ const Chats = () => {
     }
   }, [data]);
 
-  console.log("data ", data);
-  console.log("Chats ", chats);
-
   useEffect(() => {
     if (twoUsers.user1) {
       refetch();

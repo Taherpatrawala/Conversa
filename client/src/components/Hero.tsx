@@ -1,8 +1,14 @@
+import { useState } from "react";
 import Google from "../assets/Google.svg";
+import Loading from "./Loading";
 
 const Hero = () => {
+  const [loading, setLoading] = useState(false);
   function handleGoogleLogin() {
-    window.location.href = `${import.meta.env.VITE_SERVER_LINK}/google`;
+    setLoading(true);
+    setTimeout(() => {
+      window.location.href = `${import.meta.env.VITE_SERVER_LINK}/google`;
+    }, 0);
   }
   return (
     <div>
@@ -13,6 +19,11 @@ const Hero = () => {
         <img src={Google} alt="G" className="w-[30px] mr-4" />
         <p>Sign Up with Google</p>
       </button>
+      {loading && (
+        <div className="absolute top-0 left-0">
+          <Loading />
+        </div>
+      )}
     </div>
   );
 };
