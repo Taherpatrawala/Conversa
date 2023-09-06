@@ -29,8 +29,9 @@ const ChatComponent = () => {
   );
 
   const [emojiPicker, setEmojiPicker] = useState(false);
+  const [replyState, setReplyState] = useState("");
 
-  let reply;
+  let reply: string;
 
   useEffect(() => {
     socket.current = io(`${import.meta.env.VITE_SERVER_LINK}`);
@@ -66,7 +67,7 @@ const ChatComponent = () => {
         timestamp,
         twoUsers,
       });
-      reply = inputValue;
+      reply = inputValue as string;
     } else if (twoUsers) {
       console.log(twoUsers);
 
@@ -76,7 +77,7 @@ const ChatComponent = () => {
         timestamp,
         twoUsers,
       });
-      reply = inputValue;
+      reply = inputValue as string;
     }
     inputRef.current!.value = "";
     return dispatch(
@@ -117,8 +118,8 @@ const ChatComponent = () => {
           timestamp: timestamp,
         })
       );
-      replyRef.current!.innerText = data.inputValue; // ! means that it is not null
-      reply = replyRef.current?.innerHTML;
+      replyRef.current!.innerText! = data.inputValue; // ! means that it is not null
+      reply = replyRef.current?.innerHTML as string;
     };
     socket.current.on("receive-message", receiveMessageHandler);
 
@@ -135,6 +136,10 @@ const ChatComponent = () => {
             autoFocusSearch={false}
             height={350}
             lazyLoadEmojis={true}
+            onEmojiClick={(emojiData, event: MouseEvent) => {
+              setReplyState((prev) => prev + " " + emojiData.emoji);
+              console.log(emojiData);
+            }}
           />
         </div>
       ) : null}
@@ -146,6 +151,8 @@ const ChatComponent = () => {
           onKeyDown={(e) => {
             if (e.key === "Enter") handleClick();
           }}
+          value={replyState}
+          onChange={(e) => setReplyState(e.target.value)}
           className="p-5 w-[50vw] rounded-bl-md rounded-tl-md ml-8 border-none outline-none"
         />
         <button
