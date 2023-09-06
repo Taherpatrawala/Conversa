@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Google from "../assets/Google.svg";
 import Loading from "./Loading";
+import { useLocation } from "react-router-dom";
 
 const Hero = () => {
   const [loading, setLoading] = useState(false);
@@ -10,6 +11,17 @@ const Hero = () => {
       window.location.href = `${import.meta.env.VITE_SERVER_LINK}/google`;
     }, 0);
   }
+  if (useLocation().pathname !== "/") {
+    setLoading(false);
+    console.log("loading is", loading);
+  }
+
+  useEffect(() => {
+    console.log("loading is", loading);
+    return () => {
+      setLoading(false);
+    };
+  }, []);
   return (
     <div>
       <button
