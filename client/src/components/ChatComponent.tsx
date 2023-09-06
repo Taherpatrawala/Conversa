@@ -29,7 +29,6 @@ const ChatComponent = () => {
   );
 
   const [emojiPicker, setEmojiPicker] = useState(false);
-  const [replyState, setReplyState] = useState("");
 
   let reply: string;
 
@@ -135,9 +134,9 @@ const ChatComponent = () => {
           <EmojiPicker
             autoFocusSearch={false}
             height={350}
-            lazyLoadEmojis={true}
+            //  lazyLoadEmojis={true}
             onEmojiClick={(emojiData, event: MouseEvent) => {
-              setReplyState((prev) => prev + " " + emojiData.emoji);
+              inputRef.current!.value += emojiData.emoji;
               console.log(emojiData);
             }}
           />
@@ -151,8 +150,6 @@ const ChatComponent = () => {
           onKeyDown={(e) => {
             if (e.key === "Enter") handleClick();
           }}
-          value={replyState}
-          onChange={(e) => setReplyState(e.target.value)}
           className="p-5 w-[50vw] rounded-bl-md rounded-tl-md ml-8 border-none outline-none"
         />
         <button
