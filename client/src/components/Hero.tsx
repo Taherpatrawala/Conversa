@@ -18,6 +18,7 @@ const Hero = () => {
 
   useEffect(() => {
     console.log("loading is", loading);
+    setLoading(false);
     return () => {
       setLoading(false);
     };
