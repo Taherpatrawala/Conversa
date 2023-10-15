@@ -30,7 +30,7 @@ app.use(
       mongoUrl: `${process.env.MONGO_SECRET_URI}`,
     }),
     cookie: {
-      domain: `taherpatrawala-conversa.netlify.app`, //this is important because in production the server is behind a load balancer which terminates SSL and the cookie needs to be set to the root domain which is the domain of the server
+      domain: `${process.env.VITE_SERVER_LINK}`, //this is important because in production the server is behind a load balancer which terminates SSL and the cookie needs to be set to the root domain which is the domain of the server
       maxAge: 60000000000,
       secure: true,
       sameSite: "none",

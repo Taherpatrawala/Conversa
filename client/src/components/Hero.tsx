@@ -26,10 +26,7 @@ const Hero = () => {
     };
   }, []);
   return (
-    <div
-      className="flex flex-col md:flex-row justify-center md:justify-normal items-center h-screen "
-      style={{ backgroundImage: `url(${polkadots})` }}
-    >
+    <div className="flex flex-col md:flex-row justify-center md:justify-normal items-center h-screen bg-[#f7fd88]">
       <div className="flex justify-center items-center">
         <img
           src={grill}
@@ -48,7 +45,7 @@ const Hero = () => {
         </button>
       </div>
       {loading && (
-        <div className="absolute top-0 left-0">
+        <div className="absolute top-0 left-0 z-30">
           <Loading />
         </div>
       )}
